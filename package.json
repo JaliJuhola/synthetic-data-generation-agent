@@ -1,0 +1,37 @@
+{
+  "name": "synthetic-data-generation-agent",
+  "version": "1.0.0",
+  "description": "generating imaginary synthetic test data with agent in online store context",
+  "main": "index.js",
+  "scripts": {
+    "cli": "tsx cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaliJuhola/synthetic-data-generation-agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/JaliJuhola/synthetic-data-generation-agent/issues"
+  },
+  "homepage": "https://github.com/JaliJuhola/synthetic-data-generation-agent#readme",
+  "dependencies": {
+    "@ai-sdk/azure": "^3.0.138",
+    "@ai-sdk/provider": "^3.0.18",
+    "@opentelemetry/api": "^1.9.1",
+    "@strands-agents/sdk": "^1.20.0",
+    "dotenv": "^18.0.7",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.4"
+  }
+}
