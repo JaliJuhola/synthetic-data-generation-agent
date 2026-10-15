@@ -38,7 +38,14 @@ const evaluationReportSchema = z.object({
     durationMs: z.number().int().nonnegative(),
     tokenUsage: z.object({ inputTokens: z.number().nonnegative(), outputTokens: z.number().nonnegative(), totalTokens: z.number().nonnegative() }).optional(),
   }),
-  artifacts: z.object({ dataset: z.string(), generationReport: z.string(), recommendations: z.string() }),
+  artifacts: z.object({
+    products: z.string(),
+    persona: z.string(),
+    performance: z.string(),
+    dataset: z.string(),
+    generationReport: z.string(),
+    recommendations: z.string(),
+  }),
 });
 
 export function printHelp(): void {
@@ -67,7 +74,7 @@ export async function generate(request: GenerationRequest, values: Map<string, s
       return { catalogPersona: createAzureModel(config), performance: createAzureModel(config) };
     },
   });
-  process.stdout.write(`Generation ${result.report.runId} completed.\nDataset: ${result.datasetPath}\nReport: ${result.reportPath}\n`);
+  process.stdout.write(`Generation ${result.report.runId} completed.\nProducts: ${result.productsPath}\nPersona: ${result.personaPath}\nPerformance: ${result.performancePath}\nDataset: ${result.datasetPath}\nReport: ${result.reportPath}\n`);
 }
 
 export async function recommend(positional: string[], values: Map<string, string>): Promise<void> {
@@ -133,8 +140,15 @@ export async function localEvaluation(command: 'smoke' | 'eval', values: Map<str
         totalTokens: generated.report.execution.tokenUsage.totalTokens + recommendation.report.tokenUsage.totalTokens,
       } : undefined,
     },
-    artifacts: { dataset: generated.datasetPath, generationReport: generated.reportPath, recommendations: recommendation.outputPath },
+    artifacts: {
+      products: generated.productsPath,
+      persona: generated.personaPath,
+      performance: generated.performancePath,
+      dataset: generated.datasetPath,
+      generationReport: generated.reportPath,
+      recommendations: recommendation.outputPath,
+    },
   });
   const evaluationPath = await writeEvaluationReport(outputDirectory, runId, evaluation);
-  process.stdout.write(`${command} passed with mock providers.\nEvaluation: ${evaluationPath}\nDataset: ${generated.datasetPath}\nRecommendations: ${recommendation.outputPath}\n`);
+  process.stdout.write(`${command} passed with mock providers.\nEvaluation: ${evaluationPath}\nProducts: ${generated.productsPath}\nPersona: ${generated.personaPath}\nPerformance: ${generated.performancePath}\nDataset: ${generated.datasetPath}\nRecommendations: ${recommendation.outputPath}\n`);
 }

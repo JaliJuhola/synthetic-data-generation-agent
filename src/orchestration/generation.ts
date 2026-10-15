@@ -147,8 +147,14 @@ export async function runGeneration(options: {
 
   let reportToWrite = report;
   let datasetPath: string | undefined;
+  let productsPath: string | undefined;
+  let personaPath: string | undefined;
+  let performancePath: string | undefined;
   if (!failure && dataset) {
     try {
+      productsPath = await writeJson(options.outputDirectory, 'products.json', dataset.products, runId);
+      personaPath = await writeJson(options.outputDirectory, 'persona.json', dataset.personas, runId);
+      performancePath = await writeJson(options.outputDirectory, 'performance.json', dataset.campaignPerformance, runId);
       datasetPath = await writeJson(options.outputDirectory, 'dataset.json', dataset, runId);
     } catch (error) {
       const outputError = error instanceof GenerationError
@@ -160,5 +166,13 @@ export async function runGeneration(options: {
   }
   const reportPath = await writeJson(options.outputDirectory, 'generation-report.json', reportToWrite, runId);
   if (failure) throw new GenerationError(failure.code as ConstructorParameters<typeof GenerationError>[0], `${failure.message} Report: ${reportPath}`);
-  return { dataset: dataset!, report: reportToWrite, datasetPath: datasetPath!, reportPath };
+  return {
+    dataset: dataset!,
+    report: reportToWrite,
+    datasetPath: datasetPath!,
+    productsPath: productsPath!,
+    personaPath: personaPath!,
+    performancePath: performancePath!,
+    reportPath,
+  };
 }

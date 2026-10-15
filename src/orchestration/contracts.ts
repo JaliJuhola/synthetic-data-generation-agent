@@ -96,6 +96,9 @@ export interface GenerationResult {
   dataset?: PersistedDataset;
   report: GenerationReport;
   datasetPath?: string;
+  productsPath?: string;
+  personaPath?: string;
+  performancePath?: string;
   reportPath: string;
 }
 

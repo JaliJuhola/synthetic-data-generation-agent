@@ -168,6 +168,9 @@ describe('local orchestration', () => {
     expect(generated.report.request.country).toBe('CA');
     expect(generated.dataset?.personas.every((persona) => persona.country === 'CA')).toBe(true);
     expect(await readFile(generated.datasetPath!, 'utf8')).toContain('synthetic');
+    expect(JSON.parse(await readFile(generated.productsPath!, 'utf8'))).toHaveLength(1);
+    expect(JSON.parse(await readFile(generated.personaPath!, 'utf8'))).toHaveLength(1);
+    expect(JSON.parse(await readFile(generated.performancePath!, 'utf8'))).toHaveLength(1);
     expect(JSON.parse(await readFile(generated.reportPath, 'utf8')).dataSemantics.performance).toBe('synthetic-historic-measurements');
 
     const sourceBeforeRecommendations = await readFile(generated.datasetPath!, 'utf8');
